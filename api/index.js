@@ -6,7 +6,7 @@ import { renderPage } from "../lib/render.js";
 import { renderHomePage } from "../lib/home.js";
 import { renderBadge } from "../lib/badge.js";
 
-const app = new Hono().basePath("/");
+const app = new Hono();
 
 // Health check
 app.get("/healthz", (c) => c.json({ ok: true }));
