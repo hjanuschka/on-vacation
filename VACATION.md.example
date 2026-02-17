@@ -2,10 +2,10 @@
 
 We're taking a break! Issue tracker and PRs reopen February 23, 2026.
 
-All PRs will be auto-closed until then. Approved contributors can submit PRs
-after vacation without reapproval. For support, join our Discord.
+All PRs will be auto-closed until then. Approved contributors can submit
+PRs after vacation without reapproval. For support, join our Discord.
 
-```json
+```vacajson
 {
   "vacations": [
     {

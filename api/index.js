@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import { cache } from "../lib/cache.js";
-import { fetchVacationMd, parseVacationSchedule } from "../lib/vacation.js";
+import { fetchVacationMd, parseVacationSchedule, findActiveVacation, findUpcomingVacation } from "../lib/vacation.js";
 import { renderPage } from "../lib/render.js";
 import { renderHomePage } from "../lib/home.js";
 import { renderBadge } from "../lib/badge.js";
@@ -38,13 +38,7 @@ app.get("/:owner/:repo/badge.svg", async (c) => {
     });
 
     const now = new Date();
-    const active =
-      data &&
-      data.vacations.find((v) => {
-        const start = new Date(v.start + "T00:00:00Z");
-        const end = new Date(v.end + "T23:59:59Z");
-        return now >= start && now <= end;
-      });
+    const active = data ? findActiveVacation(data.vacations, now) : null;
 
     const status = active ? "on vacation" : "available";
     const color = active ? "#e67e22" : "#2ecc71";
@@ -83,15 +77,8 @@ app.get("/:owner/:repo", async (c) => {
     }
 
     const now = new Date();
-    const active = data.vacations.find((v) => {
-      const start = new Date(v.start + "T00:00:00Z");
-      const end = new Date(v.end + "T23:59:59Z");
-      return now >= start && now <= end;
-    });
-
-    const upcoming = data.vacations
-      .filter((v) => new Date(v.start + "T00:00:00Z") > now)
-      .sort((a, b) => new Date(a.start) - new Date(b.start))[0];
+    const active = findActiveVacation(data.vacations, now);
+    const upcoming = findUpcomingVacation(data.vacations, now);
 
     const result = {
       owner,
