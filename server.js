@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { cache } from "./lib/cache.js";
-import { fetchVacationMd, parseVacationSchedule, findActiveVacation, findUpcomingVacation } from "./lib/vacation.js";
+import { fetchVacationData, findActiveVacation, findUpcomingVacation } from "./lib/vacation.js";
 import { renderPage } from "./lib/render.js";
 import { renderHomePage } from "./lib/home.js";
 import { renderBadge } from "./lib/badge.js";
@@ -29,9 +29,7 @@ app.get("/:owner/:repo/badge.svg", async (c) => {
 
   try {
     const data = await cache.getOrFetch(key, async () => {
-      const md = await fetchVacationMd(owner, repo);
-      if (!md) return null;
-      return parseVacationSchedule(md);
+      return await fetchVacationData(owner, repo);
     });
 
     const now = new Date();
@@ -58,9 +56,7 @@ app.get("/:owner/:repo", async (c) => {
 
   try {
     const data = await cache.getOrFetch(key, async () => {
-      const md = await fetchVacationMd(owner, repo);
-      if (!md) return null;
-      return parseVacationSchedule(md);
+      return await fetchVacationData(owner, repo);
     });
 
     if (!data) {
