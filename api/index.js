@@ -6,6 +6,10 @@ import { renderPage } from "../lib/render.js";
 import { renderHomePage } from "../lib/home.js";
 import { renderBadge } from "../lib/badge.js";
 
+export const config = {
+  runtime: "edge",
+};
+
 const app = new Hono();
 
 // Health check
