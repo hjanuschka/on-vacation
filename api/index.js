@@ -44,15 +44,15 @@ app.get("/:owner/:repo/badge.svg", async (c) => {
     const now = new Date();
     const active = data ? findActiveVacation(data.vacations, now) : null;
 
-    const status = active ? "on vacation" : "available";
+    const status = active ? "inactive" : "active";
     const color = active ? "#e67e22" : "#2ecc71";
 
-    const svg = renderBadge("vacation", status, color);
+    const svg = renderBadge("Vacation", status, color);
     c.header("Content-Type", "image/svg+xml");
     c.header("Cache-Control", "public, max-age=300");
     return c.body(svg);
   } catch {
-    const svg = renderBadge("vacation", "unknown", "#95a5a6");
+    const svg = renderBadge("Vacation", "unknown", "#95a5a6");
     c.header("Content-Type", "image/svg+xml");
     return c.body(svg);
   }
