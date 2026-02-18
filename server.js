@@ -60,9 +60,16 @@ app.get("/:owner/:repo", async (c) => {
     });
 
     if (!data) {
-      const msg = `No VACATION.md found in ${owner}/${repo}`;
-      if (wantsJson) return c.json({ error: msg, on_vacation: false }, 404);
-      return c.html(renderPage({ owner, repo, error: msg }), 404);
+      const result = {
+        owner,
+        repo,
+        on_vacation: false,
+        current: null,
+        upcoming: null,
+        vacations: [],
+      };
+      if (wantsJson) return c.json(result);
+      return c.html(renderPage(result));
     }
 
     const now = new Date();
